@@ -19,9 +19,7 @@ A lightweight, thread-safe, low-latency Rate Limiter module written in modern C+
 Instead of protecting a single global registry map with one global lock, the keyspace is sharded using a hash function. Each shard maintains its own mutex lock, allowing threads accessing different keys to execute concurrently without waiting on each other.
 
 
-```
 
-```
    [ Incoming Request: Key = "client_ip" ]
                      |
             [ Hash Function ]
@@ -33,9 +31,7 @@ Instead of protecting a single global registry map with one global lock, the key
        |
  [TokenBucket] -> Allow / Deny
 
-```
 
-```
 
 ---
 
@@ -51,7 +47,7 @@ Initialize the `RateLimiterManager` globally or within your service container du
 // Configuration: 16 shards, Max Capacity of 10 tokens, Refill 5 tokens/sec
 auto limiter = std::make_unique<RateLimiterManager>(16, 10.0, 5.0);
 
-```
+
 
 ### 2. Integrating with an HTTP/gRPC Middleware
 
@@ -72,9 +68,7 @@ void handle_request(const HttpRequest& req, HttpResponse& res) {
     execute_business_logic();
 }
 
-```
 
----
 
 ## API Reference
 
