@@ -1,8 +1,7 @@
 
+# Rate-Limiting-CPP-Monolith
 
-```markdown
-# High-Performance C++ Rate Limiter Module
-
+High-Performance C++ Rate Limiter Module.
 A lightweight, thread-safe, low-latency Rate Limiter module written in modern C++ (C++17). Designed specifically for monolithic applications, this module provides an easy-to-integrate API to safeguard your endpoints, internal services, or heavy computations from traffic spikes.
 
 ## Features
@@ -12,13 +11,12 @@ A lightweight, thread-safe, low-latency Rate Limiter module written in modern C+
 - **Zero-Copy & Low Overhead:** Uses standard, highly optimized memory layout paradigms to ensure minimal impact on execution path latency.
 - **Header/Source Decoupled Design:** Easily dropped into any existing HTTP framework (Crow, Pistache), gRPC service, or custom IPC system.
 
----
-
 ## Architecture Overview
 
 Instead of protecting a single global registry map with one global lock, the keyspace is sharded using a hash function. Each shard maintains its own mutex lock, allowing threads accessing different keys to execute concurrently without waiting on each other.
 
 
+```text
 
    [ Incoming Request: Key = "client_ip" ]
                      |
@@ -31,9 +29,7 @@ Instead of protecting a single global registry map with one global lock, the key
        |
  [TokenBucket] -> Allow / Deny
 
-
-
----
+```
 
 ## Quick Start & Integration
 
@@ -46,8 +42,7 @@ Initialize the `RateLimiterManager` globally or within your service container du
 
 // Configuration: 16 shards, Max Capacity of 10 tokens, Refill 5 tokens/sec
 auto limiter = std::make_unique<RateLimiterManager>(16, 10.0, 5.0);
-
-
+```
 
 ### 2. Integrating with an HTTP/gRPC Middleware
 
@@ -67,28 +62,22 @@ void handle_request(const HttpRequest& req, HttpResponse& res) {
     // Process the request normally...
     execute_business_logic();
 }
-
-
+```
 
 ## API Reference
 
 ### `RateLimiterManager`
 
-* **`RateLimiterManager(size_t shards, double max_capacity, double refill_rate)`** Constructs the coordinator. Higher shard counts reduce lock contention in high-throughput environments.
-* **`bool allow(const std::string& key)`** Evaluates consumption. Returns `true` if a token was successfully acquired; returns `false` if the bucket is exhausted.
+- **`RateLimiterManager(size_t shards, double max_capacity, double refill_rate)`** Constructs the coordinator. Higher shard counts reduce lock contention in high-throughput environments.
+- **`bool allow(const std::string& key)`** Evaluates consumption. Returns `true` if a token was successfully acquired; returns `false` if the bucket is exhausted.
 
 ### `TokenBucket`
 
-* **`bool consume(double amount)`** Lazily updates the bucket state based on the elapsed wall-clock time and attempts to deduct the requested token amount.
-
----
+- **`bool consume(double amount)`** Lazily updates the bucket state based on the elapsed wall-clock time and attempts to deduct the requested token amount.
 
 ## Requirements
 
-* **Compiler:** GCC 8+, Clang 7+, or MSVC 2019+ (Requires C++17 support)
-* **Build System:** CMake 3.12+
-* **Standard Library:** Uses standard concurrency headers (`<mutex>`, `<chrono>`, `<thread>`). No external dependencies required.
 
-```
-
-```
+- **Compiler:** GCC 8+, Clang 7+, or MSVC 2019+ (Requires C++17 support)
+- **Build System:** CMake 3.12+
+- **Standard Library:** Uses standard concurrency headers (`<mutex>`, `<chrono>`, `<thread>`). No external dependencies required.
