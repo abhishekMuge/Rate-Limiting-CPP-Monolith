@@ -1,4 +1,4 @@
-Here is a clean, professional `README.md` file tailored specifically for your C++ Rate Limiter module. It highlights the architecture, design choices, and quick-start instructions.
+
 
 ```markdown
 # High-Performance C++ Rate Limiter Module
